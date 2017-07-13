@@ -1,0 +1,325 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "components_remotefirstuk_name": {
+            "defaultValue": "remotefirstuk",
+            "type": "String"
+        },
+        "servers_remotefirst_name": {
+            "defaultValue": "remotefirst",
+            "type": "String"
+        },
+        "serverfarms_remotefirstASP_name": {
+            "defaultValue": "remotefirstASP",
+            "type": "String"
+        },
+        "sites_remotefirstuk_name": {
+            "defaultValue": "remotefirstuk",
+            "type": "String"
+        },
+        "databases_master_name": {
+            "defaultValue": "remotefirst/master",
+            "type": "String"
+        },
+        "databases_remotefirstDB_name": {
+            "defaultValue": "remotefirst/remotefirstDB",
+            "type": "String"
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name": {
+            "defaultValue": "remotefirst/AllowAllWindowsAzureIps",
+            "type": "String"
+        },
+        "config_web_name": {
+            "defaultValue": "remotefirstuk/web",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/microsoft.insights/components/remotefirstuk'.",
+            "type": "microsoft.insights/components",
+            "kind": "web",
+            "name": "[parameters('components_remotefirstuk_name')]",
+            "apiVersion": "2014-04-01",
+            "location": "eastus",
+            "tags": {
+                "hidden-link:/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Web/sites/remotefirstuk": "Resource"
+            },
+            "scale": null,
+            "properties": {
+                "ApplicationId": "[parameters('components_remotefirstuk_name')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Sql/servers/remotefirst'.",
+            "type": "Microsoft.Sql/servers",
+            "kind": "v12.0",
+            "name": "[parameters('servers_remotefirst_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "UK West",
+            "scale": null,
+            "properties": {
+                "administratorLogin": "adrianAdmin",
+                "administratorLoginPassword": null,
+                "version": "12.0"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Web/serverfarms/remotefirstASP'.",
+            "type": "Microsoft.Web/serverfarms",
+            "sku": {
+                "name": "B1",
+                "tier": "Basic",
+                "size": "B1",
+                "family": "B",
+                "capacity": 1
+            },
+            "kind": "app",
+            "name": "[parameters('serverfarms_remotefirstASP_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "UK West",
+            "scale": null,
+            "properties": {
+                "name": "[parameters('serverfarms_remotefirstASP_name')]",
+                "numberOfWorkers": 1
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Web/sites/remotefirstuk'.",
+            "type": "Microsoft.Web/sites",
+            "kind": "app",
+            "name": "[parameters('sites_remotefirstuk_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "UK West",
+            "tags": {
+                "hidden-related:/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourcegroups/remotefirstRG/providers/Microsoft.Web/serverfarms/remotefirstASP": "empty"
+            },
+            "scale": null,
+            "properties": {
+                "name": "[parameters('sites_remotefirstuk_name')]",
+                "hostNames": [
+                    "remotefirstuk.azurewebsites.net"
+                ],
+                "enabledHostNames": [
+                    "remotefirstuk.azurewebsites.net",
+                    "remotefirstuk.scm.azurewebsites.net"
+                ],
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_remotefirstuk_name'),'.azurewebsites.net')]",
+                        "sslState": 0,
+                        "thumbprint": null,
+                        "ipBasedSslState": 0
+                    },
+                    {
+                        "name": "[concat(parameters('sites_remotefirstuk_name'),'.scm.azurewebsites.net')]",
+                        "sslState": 0,
+                        "thumbprint": null,
+                        "ipBasedSslState": 0
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_remotefirstASP_name'))]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_remotefirstASP_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Sql/servers/remotefirst/databases/master'.",
+            "type": "Microsoft.Sql/servers/databases",
+            "kind": "v12.0,system",
+            "name": "[parameters('databases_master_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "UK West",
+            "scale": null,
+            "properties": {
+                "databaseId": "f80c37db-3605-4a1b-bfc3-08b0fbcf37c1",
+                "edition": "System",
+                "status": "Online",
+                "serviceLevelObjective": "System2",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "32212254720",
+                "creationDate": "2017-07-13T13:00:26.617Z",
+                "currentServiceObjectiveId": "620323bf-2879-4807-b30d-c2e6d7b3b3aa",
+                "requestedServiceObjectiveId": "620323bf-2879-4807-b30d-c2e6d7b3b3aa",
+                "requestedServiceObjectiveName": "System2",
+                "sampleName": null,
+                "defaultSecondaryLocation": "UK South",
+                "earliestRestoreDate": null,
+                "elasticPoolName": null,
+                "containmentState": 2,
+                "readScale": "Disabled",
+                "failoverGroupId": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_remotefirst_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Sql/servers/remotefirst/databases/remotefirstDB'.",
+            "type": "Microsoft.Sql/servers/databases",
+            "kind": "v12.0,user",
+            "name": "[parameters('databases_remotefirstDB_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "UK West",
+            "scale": null,
+            "properties": {
+                "databaseId": "9921b59b-a6f2-4fd3-aee2-194bb231894f",
+                "edition": "Basic",
+                "status": "Online",
+                "serviceLevelObjective": "Basic",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "2147483648",
+                "creationDate": "2017-07-13T13:01:08.03Z",
+                "currentServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
+                "requestedServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
+                "requestedServiceObjectiveName": "Basic",
+                "sampleName": null,
+                "defaultSecondaryLocation": "UK South",
+                "earliestRestoreDate": "2017-07-13T13:11:36.943Z",
+                "elasticPoolName": null,
+                "containmentState": 2,
+                "readScale": "Disabled",
+                "failoverGroupId": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_remotefirst_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Sql/servers/remotefirst/firewallRules/AllowAllWindowsAzureIps'.",
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "kind": "v12.0",
+            "name": "[parameters('firewallRules_AllowAllWindowsAzureIps_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "UK West",
+            "scale": null,
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_remotefirst_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourceGroups/remotefirstRG/providers/Microsoft.Web/sites/remotefirstuk/config/web'.",
+            "type": "Microsoft.Web/sites/config",
+            "name": "[parameters('config_web_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "UK West",
+            "tags": {
+                "hidden-related:/subscriptions/02056121-6dbc-4158-b967-ac0e77d1d63c/resourcegroups/remotefirstRG/providers/Microsoft.Web/serverfarms/remotefirstASP": "empty"
+            },
+            "scale": null,
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "pythonVersion": "",
+                "nodeVersion": "",
+                "linuxFxVersion": "",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": null,
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$remotefirstuk",
+                "publishingPassword": null,
+                "appSettings": null,
+                "metadata": null,
+                "connectionStrings": null,
+                "machineKey": null,
+                "handlerMappings": null,
+                "documentRoot": null,
+                "scmType": "GitHub",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "javaVersion": null,
+                "javaContainer": null,
+                "javaContainerVersion": null,
+                "appCommandLine": "",
+                "managedPipelineMode": 0,
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false,
+                        "virtualDirectories": null
+                    }
+                ],
+                "winAuthAdminState": 0,
+                "winAuthTenantState": 0,
+                "customAppPoolIdentityAdminState": false,
+                "customAppPoolIdentityTenantState": false,
+                "runtimeADUser": null,
+                "runtimeADUserPassword": null,
+                "loadBalancing": 1,
+                "routingRules": [],
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "limits": null,
+                "autoHealEnabled": false,
+                "autoHealRules": {
+                    "triggers": null,
+                    "actions": null
+                },
+                "tracingOptions": null,
+                "vnetName": "",
+                "siteAuthEnabled": false,
+                "siteAuthSettings": {
+                    "enabled": null,
+                    "unauthenticatedClientAction": null,
+                    "tokenStoreEnabled": null,
+                    "allowedExternalRedirectUrls": null,
+                    "defaultProvider": null,
+                    "clientId": null,
+                    "clientSecret": null,
+                    "issuer": null,
+                    "allowedAudiences": null,
+                    "additionalLoginParams": null,
+                    "isAadAutoProvisioned": false,
+                    "googleClientId": null,
+                    "googleClientSecret": null,
+                    "googleOAuthScopes": null,
+                    "facebookAppId": null,
+                    "facebookAppSecret": null,
+                    "facebookOAuthScopes": null,
+                    "twitterConsumerKey": null,
+                    "twitterConsumerSecret": null,
+                    "microsoftAccountClientId": null,
+                    "microsoftAccountClientSecret": null,
+                    "microsoftAccountOAuthScopes": null
+                },
+                "cors": null,
+                "push": null,
+                "apiDefinition": null,
+                "autoSwapSlotName": null,
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_remotefirstuk_name'))]"
+            ]
+        }
+    ]
+}

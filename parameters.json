@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "components_remotefirstuk_name": {
+            "value": null
+        },
+        "servers_remotefirst_name": {
+            "value": null
+        },
+        "serverfarms_remotefirstASP_name": {
+            "value": null
+        },
+        "sites_remotefirstuk_name": {
+            "value": null
+        },
+        "databases_master_name": {
+            "value": null
+        },
+        "databases_remotefirstDB_name": {
+            "value": null
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name": {
+            "value": null
+        },
+        "config_web_name": {
+            "value": null
+        }
+    }
+}
